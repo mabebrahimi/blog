@@ -1,66 +1,87 @@
-# بلاگِ علی ابراهیمی
+# Ali Ebrahimi — Blog
 
-سایتِ استاتیک با **Hugo**؛ همه‌ی ابزارها داخلِ **Docker** اجرا می‌شوند (روی هاست چیزی نصب نمی‌شود).
+A personal blog built with **Hugo** (Persian, right‑to‑left). All tooling runs in
+**Docker**, so nothing needs to be installed on the host.
 
-## ساختار
+## Structure
 
 ```
-content/          محتوا (Markdown)
-  posts/*.md        نوشته‌ها — هر فایل یک پست
-  now.md            صفحه‌ی «الان» (داده در frontmatter)
-  uses.md           صفحه‌ی «ابزارها»
-  about.md          صفحه‌ی «درباره»
-layouts/          قالب‌های Hugo (baseof, index, posts/, partials/)
-static/           styles.css و main.js
-hugo.toml         کانفیگ
-public/           خروجیِ بیلد (gitignore — دستی نساز)
+content/          content (Markdown)
+  posts/*.md         blog posts — one file per post
+  now.md             the "Now" page (data lives in front matter)
+  uses.md            the "Uses" page
+  about.md           the "About" page
+layouts/          Hugo templates (baseof, index, posts/, partials/)
+static/           styles.css and main.js
+hugo.toml         site config
+public/           build output (git‑ignored — never edit by hand)
 ```
 
-## دستورها (همه با Docker)
+## Commands (all via Docker)
 
-بیلدِ نهایی → داخلِ `public/`:
+Build the site into `public/`:
 
 ```bash
 docker run --rm -v "$PWD":/src -w /src hugomods/hugo:latest hugo --gc --minify
 ```
 
-سرورِ توسعه با live-reload روی <http://localhost:1313> :
+Dev server with live reload at <http://localhost:1313>:
 
 ```bash
 docker run --rm -it -v "$PWD":/src -w /src -p 1313:1313 \
   hugomods/hugo:latest hugo server --bind 0.0.0.0
 ```
 
-پیش‌نمایشِ خروجیِ بیلد (بدونِ Hugo):
+Preview the built output without Hugo:
 
 ```bash
 cd public && python3 -m http.server 8080
 ```
 
-## افزودنِ یک پستِ جدید
+## Adding a post
 
-یک فایلِ `content/posts/<slug>.md` بساز:
+Create a file at `content/posts/<slug>.md`. The filename becomes the URL
+(`/posts/<slug>/`), so keep it lowercase with hyphens.
 
 ```markdown
 ---
-title: "عنوانِ نوشته"
-date: 2026-07-10
+title: "The Persian title of the post"
+date: 2026-07-15
 category: "محصول"          # محصول | برنامه‌نویسی | هوش مصنوعی
 dateFa: "تیر ۱۴۰۵"
 readingTime: "۵ دقیقه"
-excerpt: "یک جمله خلاصه که در کارت و لیست دیده می‌شود."
+excerpt: "One‑line summary shown on the home card and in the list."
 ---
 
-متنِ نوشته با **Markdown**. عنوان‌ها با `##`، لیست با `-`، نقل‌قول با `>`.
+The body, written in **Markdown**. Headings with `##`, lists with `-`,
+block quotes with `>`.
 ```
 
-جدیدترین پست (بر اساس `date`) خودکار «پستِ ویژه»ی صفحه‌ی اصلی می‌شود و URLش `‎/posts/<slug>/` است.
+Notes:
 
-## به‌روزرسانیِ «الان»
+- The newest post (by `date`) automatically becomes the **featured** card on the
+  home page; the rest fall into the list below it.
+- `date` (Gregorian) is used only for **ordering**. What readers see is `dateFa`.
 
-در `content/now.md`، یک آیتمِ جدید به **ابتدای** لیستِ `entries` اضافه کن؛ اولی «الانِ فعلی» می‌شود و بقیه خودکار می‌روند توی تاریخچه.
+## Updating the "Now" page
 
-## نکته‌ها
+In `content/now.md`, add a new item to the **top** of the `entries` list. The first
+item becomes the current "now"; the others automatically move into the history
+timeline.
 
-- **خبرنامه** فعلاً دموی سمتِ کلاینت است (سایت استاتیک است). برای واقعی‌شدن، فرم را به یک سرویس یا فانکشنِ کوچک وصل کن.
-- رنگ/فونت/تم در `static/styles.css`؛ متغیرهای تم بالای فایل. اکسنت = تیل.
+## Deploying and updating
+
+Push changes to publish (once a deploy pipeline is set up):
+
+```bash
+git add -A
+git commit -m "post: <title>"
+git push
+```
+
+## Notes
+
+- **Newsletter** is currently a client‑side demo (this is a static site). To make it
+  real, wire the form to a service or a small function.
+- Colors, fonts, and theme live in `static/styles.css`; the theme variables are at
+  the top of the file. The accent color is teal.
