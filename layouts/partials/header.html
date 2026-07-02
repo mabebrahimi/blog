@@ -1,0 +1,16 @@
+<header class="site">
+  <div class="wrap site-inner">
+    <a class="brand" href="/"><span class="mark">~/</span><span class="name">علی ابراهیمی</span></a>
+    <nav class="nav">
+      {{ range site.Menus.main }}
+        {{ $active := false }}
+        {{ if eq .URL "/" }}
+          {{ if or $.IsHome (eq $.Section "posts") }}{{ $active = true }}{{ end }}
+        {{ else if hasPrefix $.RelPermalink .URL }}
+          {{ $active = true }}
+        {{ end }}
+        <a href="{{ .URL }}"{{ if $active }} class="active"{{ end }}>{{ .Name }}</a>
+      {{ end }}
+    </nav>
+  </div>
+</header>

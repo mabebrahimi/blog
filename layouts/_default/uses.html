@@ -1,0 +1,15 @@
+{{ define "main" }}
+<main class="wrap">
+  <div class="page-head reveal">
+    {{ with .Params.kicker }}<div class="kicker">{{ . }}</div>{{ end }}
+    <h1>{{ .Params.heading | default .Title }}</h1>
+  </div>
+  <div class="page-body reveal">
+    <ul class="uses">
+      {{ range .Params.items }}
+      <li><span class="k">{{ .k }}</span><span class="v">{{ .v }}</span></li>
+      {{ end }}
+    </ul>
+  </div>
+</main>
+{{ end }}

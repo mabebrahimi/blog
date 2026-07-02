@@ -1,0 +1,28 @@
+{{ define "main" }}
+<div class="progress" id="progress"></div>
+<main class="wrap article">
+  <a class="back-btn" href="/">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    بازگشت به فهرست
+  </a>
+  <div class="article-head reveal">
+    <div class="meta"><span class="cat">{{ .Params.category }}</span><span class="dot"></span><span>{{ .Params.dateFa }}</span><span class="dot"></span><span>{{ .Params.readingTime }} مطالعه</span></div>
+    <h1>{{ .Title }}</h1>
+  </div>
+  <div class="article-body reveal">
+    {{ .Content }}
+  </div>
+  <nav class="post-nav">
+    {{ with .PrevInSection }}
+      <a class="prev" href="{{ .RelPermalink }}"><div class="dir">→ نوشته‌ی قبلی</div><div class="t">{{ .Title }}</div></a>
+    {{ else }}
+      <a class="prev disabled"></a>
+    {{ end }}
+    {{ with .NextInSection }}
+      <a class="next" href="{{ .RelPermalink }}"><div class="dir">نوشته‌ی بعدی ←</div><div class="t">{{ .Title }}</div></a>
+    {{ else }}
+      <a class="next disabled"></a>
+    {{ end }}
+  </nav>
+</main>
+{{ end }}

@@ -1,0 +1,56 @@
+{{ define "main" }}
+<main>
+  <div class="wrap">
+    <section class="hero reveal">
+      <h1>نوشتن درباره‌ی <span class="hl">ساختن</span>.</h1>
+      <p class="lede">
+        یادداشت‌های یک سازنده‌ی محصول درباره‌ی <b>کدِ ماندگار</b>، تصمیم‌های محصولی
+        و کار با هوش مصنوعی. بدون شعار — فقط چیزهایی که موقع ساختن یاد گرفتم و
+        معمولاً بابتشان هزینه دادم.
+      </p>
+    </section>
+
+    {{ $posts := where site.RegularPages "Section" "posts" }}
+    {{ if $posts }}
+    {{ $featured := index $posts 0 }}
+    {{ $rest := after 1 $posts }}
+
+    <div class="sec-label reveal">تازه‌ترین یادداشت</div>
+    <a class="featured reveal" href="{{ $featured.RelPermalink }}">
+      <span class="ribbon">★ تازه‌ترین</span>
+      {{ partial "post-meta.html" $featured }}
+      <h2>{{ $featured.Title }}</h2>
+      <p>{{ $featured.Params.excerpt }}</p>
+    </a>
+
+    <div class="sec-label reveal">همه‌ی نوشته‌ها</div>
+    <div class="postlist">
+      {{ range $i, $p := $rest }}
+      <a class="post reveal" href="{{ $p.RelPermalink }}">
+        <span class="idx">{{ partial "fa-num.html" (add $i 2) }}</span>
+        <span class="p-body">
+          <span class="p-title">{{ $p.Title }}</span>
+          {{ partial "post-meta.html" $p }}
+        </span>
+        <span class="arrow" aria-hidden="true">←</span>
+      </a>
+      {{ end }}
+    </div>
+    {{ end }}
+
+    <section class="newsletter reveal" id="newsletter">
+      <div class="nl-text">
+        <h3>خبرنامه</h3>
+        <p>هر یادداشتِ تازه، مستقیم در ایمیلت. بدون اسپم، بدون تبلیغ — فقط وقتی واقعاً چیزی برای گفتن باشد.</p>
+      </div>
+      <div class="nl-cta">
+        <form class="nl-form" id="nlForm">
+          <input type="email" id="nlEmail" placeholder="ایمیل شما" required dir="ltr" />
+          <button type="submit">عضویت</button>
+        </form>
+        <div class="nl-note" id="nlNote"></div>
+      </div>
+    </section>
+  </div>
+</main>
+{{ end }}

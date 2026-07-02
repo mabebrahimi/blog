@@ -1,0 +1,13 @@
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+{{ $title := site.Title }}
+{{ if not .IsHome }}{{ if eq .Section "posts" }}{{ $title = printf "%s — علی ابراهیمی" .Title }}{{ else }}{{ $title = .Title }}{{ end }}{{ end }}
+<title>{{ $title }}</title>
+<meta name="description" content="{{ with .Params.excerpt }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}" />
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}" />
+<meta property="og:locale" content="fa_IR" />
+<meta property="og:title" content="{{ $title }}" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230e8fa3'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='15' font-weight='700' fill='white' text-anchor='middle'%3E~/%3C/text%3E%3C/svg%3E" />
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" />
+<link rel="stylesheet" href="/styles.css" />
+<script>document.documentElement.classList.add('js');try{var t=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');if(t==='dark')document.documentElement.classList.add('dark');}catch(e){}</script>

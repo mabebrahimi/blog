@@ -1,0 +1,28 @@
+{{ define "main" }}
+<main class="wrap">
+  <div class="page-head reveal">
+    {{ with .Params.kicker }}<div class="kicker">{{ . }}</div>{{ end }}
+    <h1>{{ .Params.heading | default .Title }}</h1>
+  </div>
+  <div class="page-body reveal" id="now-body">
+    {{ $entries := .Params.entries }}
+    {{ $cur := index $entries 0 }}
+    {{ with $cur.updated }}<div class="now-updated">آخرین به‌روزرسانی: {{ . }}</div>{{ end }}
+    <h3>{{ $cur.date }}</h3>
+    {{ $cur.body | safeHTML }}
+    {{ $past := after 1 $entries }}
+    {{ if $past }}
+    <div class="now-sep">پیش‌تر این‌جا بودم</div>
+    <div class="now-history">
+      {{ range $past }}
+      <div class="now-entry">
+        <div class="now-entry-date">{{ .date }}</div>
+        <div class="now-entry-body">{{ .body | safeHTML }}</div>
+      </div>
+      {{ end }}
+    </div>
+    {{ end }}
+    <p class="note">این یک صفحه‌ی «الان» است — الهام‌گرفته از ایده‌ی nownownow: جایی که می‌گوید همین حالا مشغولِ چه‌ام، نه بیوگرافیِ همیشگی. تاریخچه‌اش هست تا سیرِ کار پیدا باشد.</p>
+  </div>
+</main>
+{{ end }}

@@ -1,0 +1,20 @@
+{{ define "main" }}
+<main class="wrap">
+  <div class="page-head reveal">
+    <div class="kicker"># نوشته‌ها</div>
+    <h1>همه‌ی نوشته‌ها</h1>
+  </div>
+  <div class="postlist">
+    {{ range $i, $p := .Pages }}
+    <a class="post reveal" href="{{ $p.RelPermalink }}">
+      <span class="idx">{{ partial "fa-num.html" (add $i 1) }}</span>
+      <span class="p-body">
+        <span class="p-title">{{ $p.Title }}</span>
+        {{ partial "post-meta.html" $p }}
+      </span>
+      <span class="arrow" aria-hidden="true">←</span>
+    </a>
+    {{ end }}
+  </div>
+</main>
+{{ end }}

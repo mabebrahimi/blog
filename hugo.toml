@@ -1,0 +1,41 @@
+baseURL = "/"
+defaultContentLanguage = "fa"
+title = "علی ابراهیمی — یادداشت‌ها"
+enableRobotsTXT = true
+buildFuture = true   # پست‌ها را صرف‌نظر از ساعتِ سیستم رندر کن
+
+[params]
+  description = "یادداشت‌های یک سازنده‌ی محصول درباره‌ی ساختن، کدِ ماندگار و کار با هوش مصنوعی — بدون شعار."
+  author = "علی ابراهیمی"
+  email = "mabebrahimi@gmail.com"
+  github = "https://github.com/"
+  twitter = "https://x.com/"
+
+# تاکسونومی‌های پیش‌فرض (tag/category) خاموش — دسته را به‌صورت پارامترِ ساده داریم
+[taxonomies]
+
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = true            # اجازه‌ی HTMLِ خام داخلِ Markdown (برای بلوک‌های کد و صفحاتِ خاص)
+  [markup.highlight]
+    noClasses = false        # بدونِ استایلِ inline؛ ظاهرِ کد را CSSِ خودمان می‌دهد
+    codeFences = true
+    guessSyntax = false
+
+# منوی بالا
+[[menu.main]]
+  name = "نوشته‌ها"
+  url = "/"
+  weight = 1
+[[menu.main]]
+  name = "الان"
+  url = "/now/"
+  weight = 2
+[[menu.main]]
+  name = "ابزارها"
+  url = "/uses/"
+  weight = 3
+[[menu.main]]
+  name = "درباره"
+  url = "/about/"
+  weight = 4
