@@ -1,0 +1,53 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-main
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  DEPLOY_PATH: /srv/blog/public
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build site (Hugo in Docker)
+        run: |
+          docker run --rm -v "$PWD":/src -w /src hugomods/hugo:latest \
+            hugo --gc --minify --baseURL "https://aliebrahimi.me/"
+          test -f public/index.html
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          cat >> ~/.ssh/config <<EOF
+          Host deploy
+            HostName ${{ secrets.DEPLOY_HOST }}
+            User ${{ secrets.DEPLOY_USER }}
+            IdentityFile ~/.ssh/deploy_key
+            StrictHostKeyChecking accept-new
+            ServerAliveInterval 60
+          EOF
+          chmod 600 ~/.ssh/config
+
+      - name: Deploy (rsync public/ → server)
+        run: |
+          rsync -az --delete --human-readable public/ "deploy:${DEPLOY_PATH}/"
+
+      - name: Verify
+        run: |
+          ssh deploy "test -f ${DEPLOY_PATH}/index.html && nginx -t"
+          echo "Deployed to ${DEPLOY_PATH} and nginx config is valid."
